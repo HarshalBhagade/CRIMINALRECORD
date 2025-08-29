@@ -1,0 +1,28 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:16
+    container_name: my_postgres
+    restart: always
+    environment:
+      POSTGRES_USER: Harshal
+      POSTGRES_PASSWORD: DB123
+      POSTGRES_DB: CRIMERECORDS
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  backend:
+    build: ./backend
+    container_name: backend
+    restart: always
+    ports:
+      - "3001:3001"
+    environment:
+      DATABASE_URL: "postgresql://Harshal:DB123@postgres:5432/CRIMERECORDS?schema=public"
+    depends_on:
+      - postgres
+
+volumes:
+  postgres_data:
